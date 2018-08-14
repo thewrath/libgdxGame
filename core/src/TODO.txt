@@ -1,0 +1,4 @@
+-Profondeur en Z 
+-Gestion de l'ombre des personnage 
+-voir le système de message de l'ECS 
+-commencer à recupérer des donnée de la map nottamenent les ennemis etc 
