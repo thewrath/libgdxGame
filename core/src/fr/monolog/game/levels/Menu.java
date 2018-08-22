@@ -9,6 +9,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 
 import fr.monolog.game.Main;
 import fr.monolog.game.factories.EntityFactory;
+import fr.monolog.game.systems.AISystem;
+import fr.monolog.game.systems.ControllableSystem;
 import fr.monolog.game.systems.MovementSystem;
 import fr.monolog.game.systems.RenderSystem;
 
@@ -35,9 +37,13 @@ public class Menu extends Level{
 		}
 				
 		MovementSystem movementSystem = new MovementSystem(game.camera);
+		ControllableSystem controllableSystem = new ControllableSystem(game.camera);
+		AISystem aiSystem = new AISystem();
 		RenderSystem renderSystem = new RenderSystem(game.camera, game.textCamera, this.map);
 		
 		engine.addSystem(movementSystem);
+		engine.addSystem(controllableSystem);
+		engine.addSystem(aiSystem);
 		engine.addSystem(renderSystem);
 	 
 		
@@ -45,7 +51,6 @@ public class Menu extends Level{
 
 	@Override
 	public void render(float delta) {
-   
 		engine.update(Gdx.graphics.getDeltaTime());
 	}
 

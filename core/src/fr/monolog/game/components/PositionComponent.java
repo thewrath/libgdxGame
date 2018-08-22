@@ -6,8 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 public class PositionComponent implements Component {
 	private float x = 0.0f; 
 	private float y = 0.0f;
-	public float width = 0.0f;
-	public float height = 0.0f;
+	private boolean needToBeFlip = false;
+	private float width;
+	private float height;
 	private Vector2 depthCenter;
 	
 	public PositionComponent(float x, float y, float width, float height){
@@ -23,6 +24,10 @@ public class PositionComponent implements Component {
 	}
 
 	public void setX(float x) {
+		if(this.x < x)
+			this.needToBeFlip = false;
+		else if(this.x > x)
+			this.needToBeFlip = true;
 		this.x = x;
 		this.depthCenter.x = this.x + width/2;
 	}
@@ -39,7 +44,7 @@ public class PositionComponent implements Component {
 	public Vector2 getDepthCenter() {
 		return depthCenter;
 	}
-
+	public boolean getNeedToBeFlip() { return needToBeFlip; }
 	
 
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.assets.AssetManager;
@@ -15,11 +14,10 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.maps.MapObject;
 
-import fr.monolog.game.components.PositionComponent;
-import fr.monolog.game.components.VelocityComponent;
-import fr.monolog.game.components.VisualComponent;
+import fr.monolog.game.components.*;
+import fr.monolog.game.utils.Helpers;
 
-public class EntityFactory {
+public class  EntityFactory {
 	
 	private static ArrayList<Quaternion> pnjRegions = new ArrayList<Quaternion>( Arrays.asList(
 			new Quaternion(96, 224, 16, 16),
@@ -50,7 +48,9 @@ public class EntityFactory {
 		
 		player.add(new PositionComponent(0.5f,0.5f, 16, 16));
 		player.add(new VelocityComponent());
+		player.add(new ControllableComponent());
 		player.add(new VisualComponent(regions));
+		player.add(new StateComponent());
 		return player;
 	}
 	
@@ -64,22 +64,26 @@ public class EntityFactory {
 		return entities;
 	}
 	
-	public static Entity createPnj(AssetManager manager, MapObject object){
+	private static Entity createPnj(AssetManager manager, MapObject object){
 		Entity entity = new Entity();
-		int index = ThreadLocalRandom.current().nextInt(0, pnjRegions.size());
-		Quaternion regionDatas = pnjRegions.get(index);
-		pnjRegions.remove(index);
+		Quaternion regionDatas = pnjRegions.get(0);
+		pnjRegions.remove(0);
 		
 		
 		Texture texture = manager.get("sprites.png", Texture.class);
-		TextureRegion region = new TextureRegion(texture, (int)regionDatas.x, (int)regionDatas.y, (int)regionDatas.z, (int)regionDatas.w);
+		ArrayList<TextureRegion> regions = new ArrayList<TextureRegion>();
+		regions.add(new TextureRegion(texture, (int)regionDatas.x, (int)regionDatas.y, (int)regionDatas.z, (int)regionDatas.w));
+		regions.add(new TextureRegion(texture, 80, 240, 16, 16));
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		
 		float x = object.getProperties().get("x", float.class);
 		float y = object.getProperties().get("y", float.class);
 		
 		entity.add(new PositionComponent(x/16,y/16, 16, 16));
-		entity.add(new VisualComponent(region));
+		entity.add(new VelocityComponent());
+		entity.add(new AIComponent());
+		entity.add(new VisualComponent(regions));
+		entity.add(new StateComponent());
 		
 		return entity;
 	}
@@ -95,7 +99,7 @@ public class EntityFactory {
 		return entities;
 	}
 	
-	public static Entity createStructure(AssetManager manager, MapObject object) {
+	private static Entity createStructure(AssetManager manager, MapObject object) {
 		Entity entity = new Entity();
 		
 		Quaternion regionDatas = structuresRegions.get(object.getProperties().get("type", String.class));
@@ -109,6 +113,7 @@ public class EntityFactory {
 		
 		entity.add(new PositionComponent(x/16,y/16, 16, 16));
 		entity.add(new VisualComponent(region));
+		entity.add(new StateComponent());
 		
 		return entity;
 	}
