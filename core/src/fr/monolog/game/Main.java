@@ -6,6 +6,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 
 import fr.monolog.game.utils.Camera;
+import fr.monolog.game.utils.Constants;
+import fr.monolog.game.utils.Helpers;
 import fr.monolog.game.utils.TextCamera;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,6 +21,7 @@ public class Main extends Game {
 	public Camera camera;
 	public TextCamera textCamera;
 	public AssetManager manager;
+	public Constants constants;
 	
 	@Override
 	public void create () {
@@ -30,6 +33,7 @@ public class Main extends Game {
 		this.camera = new Camera(); 
 		this.textCamera = new TextCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.manager = new AssetManager();
+		this.constants = new Constants(Helpers.xmlReader("../datas/settings.xml"));
 		this.setScreen(new AssetsLoaderScreen(this));
 	}
 

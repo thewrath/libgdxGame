@@ -2,6 +2,7 @@ package fr.monolog.game.levels;
 
 import java.util.ArrayList;
 
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
@@ -14,10 +15,12 @@ import fr.monolog.game.systems.ControllableSystem;
 import fr.monolog.game.systems.MovementSystem;
 import fr.monolog.game.systems.RenderSystem;
 
+
 public class Menu extends Level{
 
 	private PooledEngine engine;
 	private TiledMap map;
+
 
 	public Menu(final Main game) {
 		//récupération des données présente dans un JSON (définie les entités à créer, la map etc )
@@ -45,7 +48,7 @@ public class Menu extends Level{
 		engine.addSystem(controllableSystem);
 		engine.addSystem(aiSystem);
 		engine.addSystem(renderSystem);
-	 
+
 		
 	}
 
